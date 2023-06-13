@@ -161,17 +161,25 @@ class MainActivity : ComponentActivity() {
                         if(a.value == "" || b.value == "" || c.value == ""){
                             result.value = "не все поля заполнены"
 
-                        } else{
+                        } else if(a.value == "0" && b.value == "0" && c.value != "0") {
+                            result.value = "части уравнения тождественно неверны: " + c.value + " ≠ 0"
+                        } else {
                             try{
-                                var roots = getResult(a.value.toDouble(),b.value.toDouble(),c.value.toDouble())
-                                if(roots[0] == -1.0){
-                                    result.value = "уравнение не имеет действительных корней"
-                                }else if(roots[0] == roots[1]){
-                                    result.value = "x1=x2=${roots[0]}"
-                                } else {
-                                    result.value = "x1=${roots[0]}, x2=${roots[1]}"
+                                if(a.value == "0" && b.value == "0" && c.value == "0")
+                                    result.value = "корни уравнения могут принимать любые значения"
+                                else if(a.value == "0"){
+                                    var res = (b.value.toDouble()/c.value.toDouble())*-1
+                                    result.value = "линейное уравнение: x="+res
+                                } else{
+                                    var roots = getResult(a.value.toDouble(),b.value.toDouble(),c.value.toDouble())
+                                    if(roots[0] == -1.0){
+                                        result.value = "уравнение не имеет действительных корней"
+                                    }else if(roots[0] == roots[1]){
+                                        result.value = "x1=x2=${roots[0]}"
+                                    } else {
+                                        result.value = "x1=${roots[0]}, x2=${roots[1]}"
+                                    }
                                 }
-
                             } catch (e: Exception){
                                 result.value = "только числовые значения"
                                 a.value = ""
